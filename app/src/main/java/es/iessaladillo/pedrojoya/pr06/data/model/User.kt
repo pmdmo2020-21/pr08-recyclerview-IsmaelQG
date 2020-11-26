@@ -13,7 +13,7 @@ data class User(
         var id : Long,
         var name : String,
         var email : String,
-        var phoneNumber : String,
+        var tlf : String,
         var adress : String,
         var web : String,
         var photoUrl : String,

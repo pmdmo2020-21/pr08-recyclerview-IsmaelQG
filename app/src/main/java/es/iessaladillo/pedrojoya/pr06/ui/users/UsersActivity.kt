@@ -1,9 +1,12 @@
 package es.iessaladillo.pedrojoya.pr06.ui.users
 
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import es.iessaladillo.pedrojoya.pr06.R
+import es.iessaladillo.pedrojoya.pr06.databinding.UsersActivityBinding
 
 class UsersActivity : AppCompatActivity() {
 
@@ -29,6 +32,26 @@ class UsersActivity : AppCompatActivity() {
     }
 
     // FIN NO TOCAR
+
+    private lateinit var binding : UsersActivityBinding
+    val listAdapter : UsersActivityAdapter = UsersActivityAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = UsersActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setupViews()
+    }
+
+    private fun setupViews(){
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        binding.lstUsers.setHasFixedSize(true)
+        binding.lstUsers.adapter = listAdapter
+        binding.lstUsers.layoutManager = LinearLayoutManager(this)
+    }
 
     fun onAddUser() {
         // TODO: Acciones a realizar al querer agregar un usuario.
