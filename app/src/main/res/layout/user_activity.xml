@@ -1,12 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_2x">
+    android:padding="@dimen/margin_2x">
 
     <!-- Los iconos tienen una anchura y altura de @dimen/user_button_min_width -->
+
+    <ImageView
+        android:id="@+id/imgUser"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="@dimen/margin_2x"
+        app:layout_constraintBottom_toTopOf="@+id/lblName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1"
+        tools:src="@drawable/ic_email_24dp" />
+
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/user_lblName"
+        app:layout_constraintBottom_toTopOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/txtName"
+        app:layout_constraintRight_toRightOf="@id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/imgUser" />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_2x"
+        android:hint="@string/user_txtName"
+        app:layout_constraintBottom_toTopOf="@+id/lblEmail"
+        app:layout_constraintTop_toBottomOf="@+id/lblName" />
+
+    <TextView
+        android:id="@+id/lblEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/user_lblEmail"
+        app:layout_constraintBottom_toTopOf="@+id/txtEmail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/txtEmail"
+        app:layout_constraintRight_toRightOf="@id/txtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_2x"
+        android:hint="@string/user_txtEmail"
+        app:layout_constraintBottom_toTopOf="@+id/lblAdress"
+        app:layout_constraintEnd_toStartOf="@+id/imgEmail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblEmail" />
+
+    <ImageView
+        android:id="@+id/imgEmail"
+        android:layout_width="@dimen/user_button_min_width"
+        android:layout_height="@dimen/user_button_min_width"
+        android:layout_margin="@dimen/margin_2x"
+        android:src="@drawable/ic_email_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/txtEmail"
+        app:layout_constraintEnd_toStartOf="@+id/txtPhonenumber"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtEmail"
+        app:layout_constraintTop_toTopOf="@id/txtEmail" />
+
+    <TextView
+        android:id="@+id/lblPhonenumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/user_lblPhonenumber"
+        app:layout_constraintLeft_toLeftOf="@id/txtPhonenumber"
+        app:layout_constraintRight_toRightOf="@id/txtPhonenumber"
+        app:layout_constraintBottom_toTopOf="@id/txtPhonenumber" />
+
+    <EditText
+        android:id="@+id/txtPhonenumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/user_txtPhonenumber"
+        app:layout_constraintEnd_toStartOf="@+id/imgPhonenumber"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toEndOf="@+id/imgEmail"
+        app:layout_constraintTop_toBottomOf="@id/lblEmail" />
+
+    <ImageView
+        android:id="@+id/imgPhonenumber"
+        android:layout_width="@dimen/user_button_min_width"
+        android:layout_height="@dimen/user_button_min_width"
+        android:layout_marginLeft="@dimen/margin_2x"
+        android:src="@drawable/ic_call_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/txtPhonenumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtPhonenumber"
+        app:layout_constraintTop_toTopOf="@id/txtPhonenumber" />
+
+    <TextView
+        android:id="@+id/lblAdress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/user_lblAddress"
+        app:layout_constraintBottom_toTopOf="@+id/txtAdress"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/txtAdress"
+        app:layout_constraintRight_toRightOf="@id/txtAdress"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+    <EditText
+        android:id="@+id/txtAdress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_2x"
+        android:hint="@string/user_txtAddress"
+        app:layout_constraintBottom_toTopOf="@+id/lblWeb"
+        app:layout_constraintEnd_toStartOf="@+id/imgAdd"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblAdress" />
+
+    <ImageView
+        android:id="@+id/imgAdd"
+        android:layout_width="@dimen/user_button_min_width"
+        android:layout_height="@dimen/user_button_min_width"
+        android:layout_marginLeft="@dimen/margin_2x"
+        android:src="@drawable/ic_map_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/txtAdress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtAdress"
+        app:layout_constraintTop_toTopOf="@id/txtAdress" />
+
+    <TextView
+        android:id="@+id/lblWeb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/user_lblWeb"
+        app:layout_constraintBottom_toTopOf="@+id/txtWeb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/txtWeb"
+        app:layout_constraintRight_toRightOf="@id/txtWeb"
+        app:layout_constraintTop_toBottomOf="@+id/txtAdress" />
+
+    <EditText
+        android:id="@+id/txtWeb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_2x"
+        android:hint="@string/user_txtWeb"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgWeb"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblWeb" />
+
+    <ImageView
+        android:id="@+id/imgWeb"
+        android:layout_width="@dimen/user_button_min_width"
+        android:layout_height="@dimen/user_button_min_width"
+        android:layout_marginLeft="@dimen/margin_2x"
+        android:src="@drawable/ic_web_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/txtWeb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txtWeb"
+        app:layout_constraintTop_toTopOf="@id/txtWeb" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

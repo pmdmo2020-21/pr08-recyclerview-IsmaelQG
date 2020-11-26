@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import es.iessaladillo.pedrojoya.pr06.R
 import es.iessaladillo.pedrojoya.pr06.data.model.User
@@ -30,7 +31,7 @@ class UsersActivityAdapter : RecyclerView.Adapter<UsersActivityAdapter.ViewHolde
         private val imgCard : ImageView = itemView.findViewById(R.id.imgCard)
     }
 
-    fun submitList(newList : List<User>){
+    fun submitList(newList: List<User>){
         data = newList
         notifyDataSetChanged()
     }

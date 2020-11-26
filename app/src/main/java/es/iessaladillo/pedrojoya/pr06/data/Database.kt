@@ -5,17 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 
 class Database : DataSource{
-    private val list : MutableList<User> = mutableListOf()
+    private val list : MutableList<User> = mutableListOf(User(1, "ismael", "jasdifji", "vjnfsdujnj", "dnasjv", "fdujanfafa", "https://picsum.photos/id/122/400/300"))
     private val listData : MutableLiveData<List<User>> = MutableLiveData<List<User>>()
-    private var id : Long = 0
+    var id : Long = 0
 
     init {
         orderList()
     }
 
-    override fun getAllUsersOrderedByName(): LiveData<List<User>> {
-        return listData
-    }
+    override fun getAllUsersOrderedByName(): LiveData<List<User>> = listData
 
     private fun orderList(){
         listData.value = list.sortedBy { it.name }
