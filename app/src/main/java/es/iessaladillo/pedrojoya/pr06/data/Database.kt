@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 
-class Database : DataSource{
-    private val list : MutableList<User> = mutableListOf(User(1, "ismael", "jasdifji", "vjnfsdujnj", "dnasjv", "fdujanfafa", "https://picsum.photos/id/122/400/300"))
+object Database : DataSource{
+    private val list : MutableList<User> = mutableListOf()
     private val listData : MutableLiveData<List<User>> = MutableLiveData<List<User>>()
     var id : Long = 0
 
@@ -31,7 +31,7 @@ class Database : DataSource{
 
     override fun updateUser(user: User) {
         val indexUser = list.indexOfFirst {it.id == user.id}
-        if(indexUser != -1){
+        if(indexUser >= 0){
             list[indexUser] = user
             actData()
         }
@@ -39,7 +39,7 @@ class Database : DataSource{
 
     override fun deleteUser(user: User) {
         val indexUser = list.indexOfFirst {it.id == user.id}
-        if(indexUser != -1){
+        if(indexUser >= 0){
             list.removeAt(indexUser)
             actData()
         }

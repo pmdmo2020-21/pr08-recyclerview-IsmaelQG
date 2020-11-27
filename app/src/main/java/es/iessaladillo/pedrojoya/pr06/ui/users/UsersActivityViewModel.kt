@@ -3,17 +3,26 @@ package es.iessaladillo.pedrojoya.pr06.ui.users
 import androidx.lifecycle.ViewModel
 import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
-import javax.sql.DataSource
 
 // TODO:
 //  Crear clase UsersActivityViewModel
 
-class UsersActivityViewModel() : ViewModel(){
+class UsersActivityViewModel(val dataSource: Database) : ViewModel(){
 
-    lateinit var users : List<User>
+    var users : List<User>? = dataSource.getAllUsersOrderedByName().value
+    lateinit var preUserEdited : User
+    lateinit var userEdited : User
 
-    fun setUsers(database: Database){
-        users = database.getAllUsersOrderedByName().value!!
+    fun setUsers(){
+        users = dataSource.getAllUsersOrderedByName().value
+    }
+
+    fun delete(user : User){
+        dataSource.deleteUser(user)
+    }
+
+    fun edit(user : User){
+        dataSource.updateUser(user)
     }
 
 }

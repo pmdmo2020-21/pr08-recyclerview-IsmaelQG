@@ -5,16 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.renderscript.ScriptGroup
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import es.iessaladillo.pedrojoya.pr06.R
+import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 import es.iessaladillo.pedrojoya.pr06.databinding.UserActivityBinding
 import es.iessaladillo.pedrojoya.pr06.ui.users.UsersActivityViewModel
+import es.iessaladillo.pedrojoya.pr06.utils.loadUrl
 
 class AddUserActivity : AppCompatActivity() {
 
@@ -44,7 +49,6 @@ class AddUserActivity : AppCompatActivity() {
     // FIN NO TOCAR
 
     private lateinit var binding : UserActivityBinding
-    private lateinit var user : User
     private val viewModel : AddUserViewModel by viewModels()
 
     companion object {
@@ -63,22 +67,68 @@ class AddUserActivity : AppCompatActivity() {
     }
 
     private fun setupViews(){
+        listeners()
+    }
 
-            user = User(
-                    0,
-                    "binding.txtName?.text.toString()",
-                    "binding.txtEmail?.text.toString()",
-                    "binding.txtPhonenumber?.text.toString()",
-                    "binding.txtAdress?.text.toString()",
-                    "binding.txtWeb?.text.toString()",
-                    "https://picsum.photos/id/20/400/300"
-            )
-
+    private fun listeners(){
+        binding.txtName?.addTextChangedListener ( object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.name = binding.txtName?.text.toString()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.txtEmail?.addTextChangedListener ( object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.email = binding.txtEmail?.text.toString()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.txtPhonenumber?.addTextChangedListener ( object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.tlf = binding.txtPhonenumber?.text.toString()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.txtAdress?.addTextChangedListener ( object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.adress = binding.txtAdress?.text.toString()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.txtWeb?.addTextChangedListener ( object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.web = binding.txtWeb?.text.toString()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.imgUser?.setOnClickListener{ binding.imgUser?.loadUrl("https://picsum.photos/id/122/400/300") }
     }
 
     private fun onSave() {
-        setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to user)))
-        super.onBackPressed()
+        if(viewModel.name == "" || viewModel.email == "" || viewModel.tlf == ""){
+
+        }
+        else{
+            viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, "https://picsum.photos/id/122/400/300")
+            setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
+            super.onBackPressed()
+        }
+
     }
 
 }
