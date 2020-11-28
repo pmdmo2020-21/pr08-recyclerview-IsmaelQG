@@ -11,11 +11,11 @@ import java.util.*
 class AddUserViewModel : ViewModel(){
 
     var id : Long = 0
-    var name : String = ""
-    var email : String = ""
-    var tlf : String = ""
-    var adress : String = ""
-    var web : String = ""
+    var name = ""
+    var email = ""
+    var tlf = ""
+    var adress = ""
+    var web = ""
     var user : User? = null
 
     private val random : Random = Random()

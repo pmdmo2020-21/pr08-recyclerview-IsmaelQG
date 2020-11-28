@@ -113,7 +113,7 @@ class UsersActivity : AppCompatActivity(){
         }
     }
 
-    fun onAddUser() {
+    private fun onAddUser() {
         val intent = AddUserActivity.newIntent(this)
         addUserActivityCall.launch(intent)
     }

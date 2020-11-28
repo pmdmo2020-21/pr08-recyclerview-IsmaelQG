@@ -73,73 +73,69 @@ class EditUserActivity : AppCompatActivity() {
         if (intent == null || !intent.hasExtra(EXTRA_USER)) {
             throw RuntimeException()
         }
-        viewModel.user = intent.getParcelableExtra(EXTRA_USER)
-        viewModel.name = viewModel.user?.name ?: ""
-        viewModel.email = viewModel.user?.email ?: ""
-        viewModel.tlf = viewModel.user?.tlf ?: ""
-        viewModel.adress = viewModel.user?.adress ?: ""
-        viewModel.web = viewModel.user?.web ?: ""
+        viewModel.user = intent.getParcelableExtra(EXTRA_USER)!!
+        viewModel.name = viewModel.user.name
+        viewModel.email = viewModel.user.email
+        viewModel.tlf = viewModel.user.tlf
+        viewModel.adress = viewModel.user.adress
+        viewModel.web = viewModel.user.web
     }
 
     private fun setAllText(){
-        binding.txtName?.setText(viewModel.user?.name)
-        binding.txtEmail?.setText(viewModel.user?.email)
-        binding.txtPhonenumber?.setText(viewModel.user?.tlf)
-        if(viewModel.user?.adress != null){
-            binding.txtAdress?.setText(viewModel.user?.adress)
-        }
-        if(viewModel.user?.web != null){
-            binding.txtWeb?.setText(viewModel.user?.web)
-        }
+        binding.txtName.setText(viewModel.user.name)
+        binding.txtEmail.setText(viewModel.user.email)
+        binding.txtPhonenumber.setText(viewModel.user.tlf)
+        binding.txtAdress.setText(viewModel.user.adress)
+        binding.txtWeb.setText(viewModel.user.web)
     }
 
     private fun listeners(){
-        binding.txtName?.addTextChangedListener ( object : TextWatcher {
+        binding.txtName.addTextChangedListener ( object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                viewModel.name = binding.txtName?.text.toString()
+                viewModel.name = binding.txtName.text.toString()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.txtEmail?.addTextChangedListener ( object : TextWatcher {
+        binding.txtEmail.addTextChangedListener ( object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                viewModel.email = binding.txtEmail?.text.toString()
+                viewModel.email = binding.txtEmail.text.toString()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.txtPhonenumber?.addTextChangedListener ( object : TextWatcher {
+        binding.txtPhonenumber.addTextChangedListener ( object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                viewModel.tlf = binding.txtPhonenumber?.text.toString()
+                viewModel.tlf = binding.txtPhonenumber.text.toString()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.txtAdress?.addTextChangedListener ( object : TextWatcher {
+        binding.txtAdress.addTextChangedListener ( object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                viewModel.adress = binding.txtAdress?.text.toString()
+                viewModel.adress = binding.txtAdress.text.toString()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.txtWeb?.addTextChangedListener ( object : TextWatcher {
+        binding.txtWeb.addTextChangedListener ( object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                viewModel.web = binding.txtWeb?.text.toString()
+                viewModel.web = binding.txtWeb.text.toString()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.imgUser?.setOnClickListener{ binding.imgUser?.loadUrl("https://picsum.photos/id/122/400/300") }
+        binding.imgUser.setOnClickListener{ binding.imgUser.loadUrl("https://picsum.photos/id/122/400/300") }
     }
 
     private fun onSave() {
