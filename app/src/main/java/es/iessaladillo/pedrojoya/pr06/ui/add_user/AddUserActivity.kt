@@ -123,21 +123,13 @@ class AddUserActivity : AppCompatActivity() {
 
     private fun onSave() {
 
-        val snackBack = Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).setAction("Action", null)
-        if(viewModel.name == "" || viewModel.email == "" || viewModel.tlf == ""){
-            snackBack.show()
+        if(viewModel.checkIfEmpty()){
+            Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
         else{
-            try {
-                val num = parseDouble(viewModel.tlf) //Su objetivo es comprobar que el telefono introducido
-                                                     //es una cadena de numeros
-
-                viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, viewModel.img)
-                setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
-                super.onBackPressed()
-            } catch (e: NumberFormatException) {
-                snackBack.show()
-            }
+            viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, viewModel.img)
+            setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
+            finish()
         }
 
     }

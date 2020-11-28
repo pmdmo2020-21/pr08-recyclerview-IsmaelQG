@@ -31,6 +31,10 @@ class EditUserViewModel : ViewModel(){
         return randomImg
     }
 
+    fun checkIfEmpty() : Boolean{
+        return (name == "" || email == "" || tlf == "")
+    }
+
     private fun getRandomPhotoUrl(): String =
             "https://picsum.photos/id/${random.nextInt(100)}/400/300"
 
