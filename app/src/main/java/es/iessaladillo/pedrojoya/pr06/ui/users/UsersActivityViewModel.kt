@@ -7,7 +7,7 @@ import es.iessaladillo.pedrojoya.pr06.data.model.User
 // TODO:
 //  Crear clase UsersActivityViewModel
 
-class UsersActivityViewModel(val dataSource: Database) : ViewModel(){
+class UsersActivityViewModel(private val dataSource: Database) : ViewModel(){
 
     var users : List<User>? = dataSource.getAllUsersOrderedByName().value
     lateinit var preUserEdited : User

@@ -10,11 +10,13 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import com.google.android.material.snackbar.Snackbar
 import es.iessaladillo.pedrojoya.pr06.R
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 import es.iessaladillo.pedrojoya.pr06.databinding.UserActivityBinding
 import es.iessaladillo.pedrojoya.pr06.ui.add_user.AddUserActivity
 import es.iessaladillo.pedrojoya.pr06.utils.loadUrl
+import java.lang.Double.parseDouble
 
 class EditUserActivity : AppCompatActivity() {
 
@@ -79,6 +81,8 @@ class EditUserActivity : AppCompatActivity() {
         viewModel.tlf = viewModel.user.tlf
         viewModel.adress = viewModel.user.adress
         viewModel.web = viewModel.user.web
+        viewModel.img = viewModel.user.photoUrl
+        binding.imgUser.loadUrl(viewModel.img)
     }
 
     private fun setAllText(){
@@ -135,17 +139,30 @@ class EditUserActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        binding.imgUser.setOnClickListener{ binding.imgUser.loadUrl("https://picsum.photos/id/122/400/300") }
+        binding.imgUser.setOnClickListener{
+            viewModel.img = viewModel.setRandomImg()
+            binding.imgUser.loadUrl(viewModel.img)
+        }
     }
 
     private fun onSave() {
-        if(viewModel.name == "" || viewModel.email == "" || viewModel.tlf == ""){
 
+        val snackBack = Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).setAction("Action", null)
+
+        if(viewModel.name == "" || viewModel.email == "" || viewModel.tlf == ""){
+            snackBack.show()
         }
         else{
-            viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, "https://picsum.photos/id/122/400/300")
-            setResult(RESULT_OK, Intent().putExtras(bundleOf(AddUserActivity.EXTRA_USER to viewModel.user)))
-            super.onBackPressed()
+            try {
+                val num = parseDouble(viewModel.tlf) //Su objetivo es comprobar que el telefono introducido
+                                                     //es una cadena de numeros
+
+                viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, viewModel.img)
+                setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
+                super.onBackPressed()
+            } catch (e: NumberFormatException) {
+                snackBack.show()
+            }
         }
     }
 

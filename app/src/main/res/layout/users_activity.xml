@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/margin_2x"
+    android:animateLayoutChanges="true"
     tools:context="es.iessaladillo.pedrojoya.pr06.ui.users.UsersActivity">
 
     <!-- El ReciclerView tiene un padding @dimen/margin_half -->

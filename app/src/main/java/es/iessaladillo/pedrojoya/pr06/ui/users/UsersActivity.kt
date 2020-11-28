@@ -63,8 +63,8 @@ class UsersActivity : AppCompatActivity(){
                 val resultIntent = result.data
                 if (result.resultCode == Activity.RESULT_OK && resultIntent != null) {
                     extractResultAdd(resultIntent)
-                    imageVisibility()
                 }
+                imageVisibility()
             }
 
     private val editUserActivityCall=
@@ -72,7 +72,6 @@ class UsersActivity : AppCompatActivity(){
                 val resultIntent = result.data
                 if (result.resultCode == Activity.RESULT_OK && resultIntent != null) {
                     extractResultEdit(resultIntent)
-                    imageVisibility()
                 }
             }
 
@@ -107,9 +106,7 @@ class UsersActivity : AppCompatActivity(){
             setHasFixedSize(true)
             adapter = listAdapter
             layoutManager = LinearLayoutManager(this@UsersActivity)
-            addItemDecoration(DividerItemDecoration(this@UsersActivity, RecyclerView.VERTICAL))
             itemAnimator = DefaultItemAnimator()
-
         }
     }
 
@@ -156,6 +153,7 @@ class UsersActivity : AppCompatActivity(){
         Toast.makeText(this, "Delete ${user.name}", Toast.LENGTH_SHORT).show()
         viewModel.delete(user)
         listAdapter.submitList(Database.getAllUsersOrderedByName().value!!)
+        imageVisibility()
     }
 
 }

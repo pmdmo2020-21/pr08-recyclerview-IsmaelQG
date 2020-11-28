@@ -10,15 +10,22 @@ import java.util.*
 
 class AddUserViewModel : ViewModel(){
 
+    private var random : Random = Random()
+
+    lateinit var img : String
+    var randomImg = getRandomPhotoUrl()
     var id : Long = 0
     var name = ""
     var email = ""
     var tlf = ""
     var adress = ""
     var web = ""
-    var user : User? = null
+    lateinit var user : User
 
-    private val random : Random = Random()
+    fun setRandomImg() : String{
+        randomImg = getRandomPhotoUrl()
+        return randomImg
+    }
 
     private fun getRandomPhotoUrl(): String =
             "https://picsum.photos/id/${random.nextInt(100)}/400/300"
