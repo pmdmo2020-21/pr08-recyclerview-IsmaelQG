@@ -116,7 +116,7 @@ class AddUserActivity : AppCompatActivity() {
             }
         })
         binding.imgUser.setOnClickListener{
-            viewModel.img = viewModel.setRandomImg()
+            viewModel.setRandomImg()
             binding.imgUser.loadUrl(viewModel.img)
         }
     }

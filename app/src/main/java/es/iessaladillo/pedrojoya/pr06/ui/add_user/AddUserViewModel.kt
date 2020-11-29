@@ -22,9 +22,9 @@ class AddUserViewModel : ViewModel(){
     var web = ""
     lateinit var user : User
 
-    fun setRandomImg() : String{
+    fun setRandomImg(){
         randomImg = getRandomPhotoUrl()
-        return randomImg
+        img = randomImg
     }
 
     fun checkIfEmpty() : Boolean{
