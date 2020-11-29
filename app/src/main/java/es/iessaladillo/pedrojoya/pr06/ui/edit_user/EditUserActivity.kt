@@ -154,7 +154,7 @@ class EditUserActivity : AppCompatActivity() {
         else{
             viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, viewModel.img)
             setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
-            super.onBackPressed()
+            finish()
         }
     }
 
