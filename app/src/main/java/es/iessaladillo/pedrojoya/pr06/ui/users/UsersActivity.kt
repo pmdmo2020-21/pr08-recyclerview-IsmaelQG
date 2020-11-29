@@ -120,14 +120,16 @@ class UsersActivity : AppCompatActivity(){
         if (!intent.hasExtra(AddUserActivity.EXTRA_USER)) {
             throw RuntimeException()
         }
-        viewModel.insert(intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!)
+        val user : User = intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!
+        viewModel.insert(user)
     }
 
     private fun extractResultEdit(intent: Intent) {
         if (!intent.hasExtra(AddUserActivity.EXTRA_USER)) {
             throw RuntimeException()
         }
-        viewModel.edit(intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!)
+        val user : User = intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!
+        viewModel.edit(user)
     }
 
     private fun editUser(position : Int){
@@ -141,7 +143,6 @@ class UsersActivity : AppCompatActivity(){
         val user : User = listAdapter.currentList[position]
         Toast.makeText(this, "Delete ${user.name}", Toast.LENGTH_SHORT).show()
         viewModel.delete(user)
-        observeUsers()
     }
 
 }

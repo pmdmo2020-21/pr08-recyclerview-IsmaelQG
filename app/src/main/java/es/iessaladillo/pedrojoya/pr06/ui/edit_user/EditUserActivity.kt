@@ -76,6 +76,7 @@ class EditUserActivity : AppCompatActivity() {
             throw RuntimeException()
         }
         viewModel.user = intent.getParcelableExtra(EXTRA_USER)!!
+        viewModel.id = viewModel.user.id
         viewModel.name = viewModel.user.name
         viewModel.email = viewModel.user.email
         viewModel.tlf = viewModel.user.tlf

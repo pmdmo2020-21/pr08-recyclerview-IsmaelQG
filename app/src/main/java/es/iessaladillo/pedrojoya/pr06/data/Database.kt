@@ -1,8 +1,11 @@
 package es.iessaladillo.pedrojoya.pr06.data
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import es.iessaladillo.pedrojoya.pr06.data.model.User
+import es.iessaladillo.pedrojoya.pr06.ui.users.UsersActivity
 
 object Database : DataSource{
     private val list : MutableList<User> = mutableListOf()
@@ -30,7 +33,8 @@ object Database : DataSource{
     }
 
     override fun updateUser(user: User) {
-        val indexUser = list.indexOfFirst {it.id == user.id}
+        val indexUser = list.indexOfFirst {
+            it.id == user.id}
         if(indexUser >= 0){
             list[indexUser] = user
             actData()
