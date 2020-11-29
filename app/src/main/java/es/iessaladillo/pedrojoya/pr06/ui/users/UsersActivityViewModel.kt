@@ -1,5 +1,6 @@
 package es.iessaladillo.pedrojoya.pr06.ui.users
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
@@ -9,12 +10,10 @@ import es.iessaladillo.pedrojoya.pr06.data.model.User
 
 class UsersActivityViewModel(private val dataSource: Database) : ViewModel(){
 
-    var users : List<User>? = dataSource.getAllUsersOrderedByName().value
-    lateinit var preUserEdited : User
-    lateinit var userEdited : User
+    var users : LiveData<List<User>> = dataSource.getAllUsersOrderedByName()
 
-    fun setUsers(){
-        users = dataSource.getAllUsersOrderedByName().value
+    fun insert(user : User){
+        dataSource.insertUser(user)
     }
 
     fun delete(user : User){

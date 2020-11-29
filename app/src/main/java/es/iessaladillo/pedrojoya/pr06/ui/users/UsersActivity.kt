@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -64,7 +65,6 @@ class UsersActivity : AppCompatActivity(){
                 if (result.resultCode == Activity.RESULT_OK && resultIntent != null) {
                     extractResultAdd(resultIntent)
                 }
-                imageVisibility()
             }
 
     private val editUserActivityCall=
@@ -79,11 +79,11 @@ class UsersActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupViews()
+        observeUsers()
     }
 
     private fun setupViews(){
         setupRecyclerView()
-        imageVisibility()
         listeners()
     }
 
@@ -91,14 +91,15 @@ class UsersActivity : AppCompatActivity(){
         binding.imgAdd.setOnClickListener { onAddUser() }
     }
 
-    private fun imageVisibility(){
-        listAdapter.submitList(Database.getAllUsersOrderedByName().value!!)
-        if(listAdapter.itemCount == 0){
-            binding.imgAdd.visibility = VISIBLE
+    private fun observeUsers(){
+        viewModel.users.observe(this){
+            updateList(it)
         }
-        else{
-            binding.imgAdd.visibility = GONE
-        }
+    }
+
+    private fun updateList(newList : List<User>){
+        listAdapter.submitList(newList)
+        binding.imgAdd.visibility = if (newList.isEmpty()) VISIBLE else GONE
     }
 
     private fun setupRecyclerView() {
@@ -119,41 +120,28 @@ class UsersActivity : AppCompatActivity(){
         if (!intent.hasExtra(AddUserActivity.EXTRA_USER)) {
             throw RuntimeException()
         }
-        val user : User = intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!
-        Database.insertUser(user)
-        viewModel.setUsers()
-        listAdapter.submitList(viewModel.users!!)
-        listAdapter.onCreateViewHolder(binding.lstUsers, Database.id.toInt())
+        viewModel.insert(intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!)
     }
 
     private fun extractResultEdit(intent: Intent) {
         if (!intent.hasExtra(AddUserActivity.EXTRA_USER)) {
             throw RuntimeException()
         }
-        val user : User = intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!
-        Database.insertUser(user)
-        Database.deleteUser(viewModel.preUserEdited)
-        viewModel.userEdited = user
-        viewModel.setUsers()
-        listAdapter.submitList(viewModel.users!!)
-        listAdapter.onCreateViewHolder(binding.lstUsers, Database.id.toInt())
-        viewModel.edit(viewModel.userEdited)
+        viewModel.edit(intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!)
     }
 
     private fun editUser(position : Int){
-        val user : User = listAdapter.getItem(position)
-        viewModel.preUserEdited = user
+        val user : User = listAdapter.currentList[position]
         Toast.makeText(this, "Edit ${user.name}", Toast.LENGTH_SHORT).show()
         val intent = EditUserActivity.newIntent(this, user)
         editUserActivityCall.launch(intent)
     }
 
     private fun deleteUser(position : Int){
-        val user : User = listAdapter.getItem(position)
+        val user : User = listAdapter.currentList[position]
         Toast.makeText(this, "Delete ${user.name}", Toast.LENGTH_SHORT).show()
         viewModel.delete(user)
-        listAdapter.submitList(Database.getAllUsersOrderedByName().value!!)
-        imageVisibility()
+        observeUsers()
     }
 
 }

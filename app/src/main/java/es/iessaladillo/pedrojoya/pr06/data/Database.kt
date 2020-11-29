@@ -20,7 +20,7 @@ object Database : DataSource{
     }
 
     private fun actData(){
-        listData.value = list
+        listData.value = ArrayList<User>(list)
     }
 
     override fun insertUser(user: User) {

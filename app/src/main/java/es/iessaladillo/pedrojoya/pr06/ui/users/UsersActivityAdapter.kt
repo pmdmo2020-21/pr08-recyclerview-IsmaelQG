@@ -3,6 +3,8 @@ package es.iessaladillo.pedrojoya.pr06.ui.users
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import es.iessaladillo.pedrojoya.pr06.R
 import es.iessaladillo.pedrojoya.pr06.data.model.User
@@ -14,9 +16,8 @@ import kotlinx.android.synthetic.main.users_activity_item.view.*
 import kotlinx.android.synthetic.main.users_activity_item.view.lblEmail
 import kotlinx.android.synthetic.main.users_activity_item.view.lblName
 
-class UsersActivityAdapter : RecyclerView.Adapter<UsersActivityAdapter.ViewHolder>() {
+class UsersActivityAdapter : ListAdapter<User, UsersActivityAdapter.ViewHolder>(UserDiffCallback) {
 
-    private var data : List<User> = emptyList()
     var onEditListener : ((Int) -> Unit)? = null
     var onDeleteListener : ((Int) -> Unit)? = null
 
@@ -25,7 +26,7 @@ class UsersActivityAdapter : RecyclerView.Adapter<UsersActivityAdapter.ViewHolde
     }
 
     override fun getItemId(position: Int): Long {
-        return data[position].id
+        return currentList[position].id
     }
 
     inner class ViewHolder(override val containerView : View) : RecyclerView.ViewHolder(containerView) , LayoutContainer{
@@ -51,13 +52,6 @@ class UsersActivityAdapter : RecyclerView.Adapter<UsersActivityAdapter.ViewHolde
         }
     }
 
-    fun submitList(newList: List<User>){
-        data = newList
-        notifyDataSetChanged()
-    }
-
-    fun getItem(position : Int) : User = data[position]
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemView = layoutInflater.inflate(R.layout.users_activity_item, parent, false)
@@ -65,10 +59,23 @@ class UsersActivityAdapter : RecyclerView.Adapter<UsersActivityAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = data[position]
-        holder.bind(user)
+        holder.bind(currentList[position])
     }
 
-    override fun getItemCount(): Int = data.size
+    object UserDiffCallback : DiffUtil.ItemCallback<User>(){
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.name == newItem.name &&
+                    oldItem.email == newItem.email &&
+                    oldItem.tlf == newItem.tlf &&
+                    oldItem.adress == newItem.adress &&
+                    oldItem.web == newItem.web &&
+                    oldItem.photoUrl == newItem.photoUrl
+        }
+
+    }
 
 }
