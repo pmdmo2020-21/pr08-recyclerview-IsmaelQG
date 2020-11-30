@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.core.text.isDigitsOnly
 import com.google.android.material.snackbar.Snackbar
 import es.iessaladillo.pedrojoya.pr06.R
+import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 import es.iessaladillo.pedrojoya.pr06.databinding.UserActivityBinding
 import es.iessaladillo.pedrojoya.pr06.utils.loadUrl
@@ -46,7 +47,9 @@ class AddUserActivity : AppCompatActivity() {
     // FIN NO TOCAR
 
     private lateinit var binding : UserActivityBinding
-    private val viewModel : AddUserViewModel by viewModels()
+    private val viewModel : AddUserViewModel by viewModels(){
+        AddUserViewModelFactory(Database)
+    }
 
     companion object {
 
@@ -65,70 +68,35 @@ class AddUserActivity : AppCompatActivity() {
 
     private fun setupViews(){
         listeners()
-        viewModel.img = viewModel.randomImg
+        viewModel.setRandomImg()
         binding.imgUser.loadUrl(viewModel.img)
     }
 
     private fun listeners(){
-        binding.txtName.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.name = binding.txtName.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtEmail.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.email = binding.txtEmail.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtPhonenumber.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.tlf = binding.txtPhonenumber.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtAdress.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.adress = binding.txtAdress.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtWeb.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.web = binding.txtWeb.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+        binding.txtWeb.setOnEditorActionListener { v, actionId, event ->
+            onSave()
+            true
+        }
         binding.imgUser.setOnClickListener{
             viewModel.setRandomImg()
             binding.imgUser.loadUrl(viewModel.img)
         }
     }
 
-    private fun onSave() {
+    private fun onSave(){
+        val name = binding.txtName.text.toString()
+        val email = binding.txtEmail.text.toString()
+        val tlf = binding.txtPhonenumber.text.toString()
 
-        if(viewModel.checkIfEmpty()){
-            Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        if(name.isBlank() || email.isBlank() || tlf.isBlank()){
+            Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).show()
         }
         else{
-            viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, viewModel.img)
-            setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
+            val adress = binding.txtAdress.text.toString()
+            val web = binding.txtWeb.text.toString()
+            val photoUrl = viewModel.img
+            val user = User(0, name, email, tlf, adress, web, photoUrl)
+            viewModel.insert(user)
             finish()
         }
 

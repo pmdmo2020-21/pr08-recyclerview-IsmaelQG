@@ -63,7 +63,6 @@ class UsersActivity : AppCompatActivity(){
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
                 val resultIntent = result.data
                 if (result.resultCode == Activity.RESULT_OK && resultIntent != null) {
-                    extractResultAdd(resultIntent)
                 }
             }
 
@@ -71,7 +70,6 @@ class UsersActivity : AppCompatActivity(){
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
                 val resultIntent = result.data
                 if (result.resultCode == Activity.RESULT_OK && resultIntent != null) {
-                    extractResultEdit(resultIntent)
                 }
             }
 
@@ -114,22 +112,6 @@ class UsersActivity : AppCompatActivity(){
     private fun onAddUser() {
         val intent = AddUserActivity.newIntent(this)
         addUserActivityCall.launch(intent)
-    }
-
-    private fun extractResultAdd(intent: Intent) {
-        if (!intent.hasExtra(AddUserActivity.EXTRA_USER)) {
-            throw RuntimeException()
-        }
-        val user : User = intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!
-        viewModel.insert(user)
-    }
-
-    private fun extractResultEdit(intent: Intent) {
-        if (!intent.hasExtra(AddUserActivity.EXTRA_USER)) {
-            throw RuntimeException()
-        }
-        val user : User = intent.getParcelableExtra(AddUserActivity.EXTRA_USER)!!
-        viewModel.edit(user)
     }
 
     private fun editUser(position : Int){

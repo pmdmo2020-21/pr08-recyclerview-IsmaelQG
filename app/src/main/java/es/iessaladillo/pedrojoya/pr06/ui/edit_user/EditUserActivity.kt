@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.google.android.material.snackbar.Snackbar
 import es.iessaladillo.pedrojoya.pr06.R
+import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 import es.iessaladillo.pedrojoya.pr06.databinding.UserActivityBinding
 import es.iessaladillo.pedrojoya.pr06.ui.add_user.AddUserActivity
@@ -48,7 +49,9 @@ class EditUserActivity : AppCompatActivity() {
     // FIN NO TOCAR
 
     private lateinit var binding : UserActivityBinding
-    private val viewModel : EditUserViewModel by viewModels()
+    private val viewModel : EditUserViewModel by viewModels(){
+        EditUserViewModelFactory(Database)
+    }
 
     companion object {
 
@@ -76,14 +79,6 @@ class EditUserActivity : AppCompatActivity() {
             throw RuntimeException()
         }
         viewModel.user = intent.getParcelableExtra(EXTRA_USER)!!
-        viewModel.id = viewModel.user.id
-        viewModel.name = viewModel.user.name
-        viewModel.email = viewModel.user.email
-        viewModel.tlf = viewModel.user.tlf
-        viewModel.adress = viewModel.user.adress
-        viewModel.web = viewModel.user.web
-        viewModel.img = viewModel.user.photoUrl
-        binding.imgUser.loadUrl(viewModel.img)
     }
 
     private fun setAllText(){
@@ -92,68 +87,35 @@ class EditUserActivity : AppCompatActivity() {
         binding.txtPhonenumber.setText(viewModel.user.tlf)
         binding.txtAdress.setText(viewModel.user.adress)
         binding.txtWeb.setText(viewModel.user.web)
+        binding.imgUser.loadUrl(viewModel.user.photoUrl)
     }
 
     private fun listeners(){
-        binding.txtName.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.name = binding.txtName.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtEmail.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.email = binding.txtEmail.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtPhonenumber.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.tlf = binding.txtPhonenumber.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtAdress.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.adress = binding.txtAdress.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
-        binding.txtWeb.addTextChangedListener ( object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.web = binding.txtWeb.text.toString()
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+        binding.txtWeb.setOnEditorActionListener { v, actionId, event ->
+            onSave()
+            true
+        }
         binding.imgUser.setOnClickListener{
             viewModel.setRandomImg()
             binding.imgUser.loadUrl(viewModel.img)
+            viewModel.user.photoUrl = viewModel.img
         }
     }
 
     private fun onSave() {
+        val name = binding.txtName.text.toString()
+        val email = binding.txtEmail.text.toString()
+        val tlf = binding.txtPhonenumber.text.toString()
 
-        if(viewModel.checkIfEmpty()){
-            Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        if(name.isBlank() || email.isBlank() || tlf.isBlank()){
+            Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).show()
         }
         else{
-            viewModel.user = User(viewModel.id, viewModel.name, viewModel.email, viewModel.tlf, viewModel.adress, viewModel.web, viewModel.img)
-            setResult(RESULT_OK, Intent().putExtras(bundleOf(EXTRA_USER to viewModel.user)))
+            val adress = binding.txtAdress.text.toString()
+            val web = binding.txtWeb.text.toString()
+            val photoUrl = viewModel.user.photoUrl
+            val user = User(viewModel.user.id, name, email, tlf, adress, web, photoUrl)
+            viewModel.edit(user)
             finish()
         }
     }
