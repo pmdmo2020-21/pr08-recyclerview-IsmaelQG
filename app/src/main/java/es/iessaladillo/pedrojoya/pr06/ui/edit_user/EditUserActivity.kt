@@ -3,7 +3,6 @@ package es.iessaladillo.pedrojoya.pr06.ui.edit_user
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
@@ -48,17 +47,17 @@ class EditUserActivity : AppCompatActivity() {
 
     // FIN NO TOCAR
 
-    private lateinit var binding : UserActivityBinding
-    private val viewModel : EditUserViewModel by viewModels(){
-        EditUserViewModelFactory(Database)
-    }
-
     companion object {
 
         const val EXTRA_USER = "EXTRA_USER"
 
         fun newIntent(context: Context, user : User) =
                 Intent(context, EditUserActivity::class.java).putExtras(bundleOf(EXTRA_USER to user))
+    }
+
+    private lateinit var binding : UserActivityBinding
+    private val viewModel : EditUserViewModel by viewModels(){
+        EditUserViewModelFactory(Database, intent.getParcelableExtra(EXTRA_USER)!!)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +69,8 @@ class EditUserActivity : AppCompatActivity() {
 
     private fun setupViews(){
         getIntentData()
-        setAllText()
+        observeUser()
+        observeRandomImg()
         listeners()
     }
 
@@ -78,16 +78,31 @@ class EditUserActivity : AppCompatActivity() {
         if (intent == null || !intent.hasExtra(EXTRA_USER)) {
             throw RuntimeException()
         }
-        viewModel.user = intent.getParcelableExtra(EXTRA_USER)!!
     }
 
-    private fun setAllText(){
-        binding.txtName.setText(viewModel.user.name)
-        binding.txtEmail.setText(viewModel.user.email)
-        binding.txtPhonenumber.setText(viewModel.user.tlf)
-        binding.txtAdress.setText(viewModel.user.adress)
-        binding.txtWeb.setText(viewModel.user.web)
-        binding.imgUser.loadUrl(viewModel.user.photoUrl)
+    private fun observeUser(){
+        viewModel.user.observe(this) {
+            setAllText(it)
+        }
+    }
+
+    private fun observeRandomImg(){
+        viewModel.img.observe(this){
+            changeImg(it)
+        }
+    }
+
+    private fun setAllText(user : User){
+        binding.txtName.setText(user.name)
+        binding.txtEmail.setText(user.email)
+        binding.txtPhonenumber.setText(user.tlf)
+        binding.txtAdress.setText(user.adress)
+        binding.txtWeb.setText(user.web)
+        binding.imgUser.loadUrl(user.photoUrl)
+    }
+
+    private fun changeImg(img : String){
+        binding.imgUser.loadUrl(img)
     }
 
     private fun listeners(){
@@ -96,9 +111,7 @@ class EditUserActivity : AppCompatActivity() {
             true
         }
         binding.imgUser.setOnClickListener{
-            viewModel.setRandomImg()
-            binding.imgUser.loadUrl(viewModel.img)
-            viewModel.user.photoUrl = viewModel.img
+            viewModel.actImg()
         }
     }
 
@@ -113,8 +126,8 @@ class EditUserActivity : AppCompatActivity() {
         else{
             val adress = binding.txtAdress.text.toString()
             val web = binding.txtWeb.text.toString()
-            val photoUrl = viewModel.user.photoUrl
-            val user = User(viewModel.user.id, name, email, tlf, adress, web, photoUrl)
+            val photoUrl = viewModel.user.value?.photoUrl ?: ""
+            val user = User(viewModel.user.value?.id ?: 0, name, email, tlf, adress, web, photoUrl)
             viewModel.edit(user)
             finish()
         }

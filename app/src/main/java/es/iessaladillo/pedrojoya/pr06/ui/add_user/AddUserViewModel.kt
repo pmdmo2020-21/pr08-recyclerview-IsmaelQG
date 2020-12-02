@@ -1,5 +1,7 @@
 package es.iessaladillo.pedrojoya.pr06.ui.add_user
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import es.iessaladillo.pedrojoya.pr06.data.DataSource
 import es.iessaladillo.pedrojoya.pr06.data.model.User
@@ -13,12 +15,12 @@ class AddUserViewModel(val dataSource : DataSource) : ViewModel(){
 
     private var random : Random = Random()
 
-    lateinit var img : String
-    var randomImg = getRandomPhotoUrl()
+    private val _img : MutableLiveData<String> = MutableLiveData(getRandomPhotoUrl())
+    val img : LiveData<String>
+        get() = _img
 
-    fun setRandomImg(){
-        randomImg = getRandomPhotoUrl()
-        img = randomImg
+    fun actImg(){
+        _img.value = getRandomPhotoUrl()
     }
 
     fun insert(user : User){

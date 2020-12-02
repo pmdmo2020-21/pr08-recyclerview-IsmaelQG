@@ -68,8 +68,17 @@ class AddUserActivity : AppCompatActivity() {
 
     private fun setupViews(){
         listeners()
-        viewModel.setRandomImg()
-        binding.imgUser.loadUrl(viewModel.img)
+        observeRandomImg()
+    }
+
+    private fun observeRandomImg(){
+        viewModel.img.observe(this){
+            changeImg(it)
+        }
+    }
+
+    private fun changeImg(img : String){
+        binding.imgUser.loadUrl(img)
     }
 
     private fun listeners(){
@@ -78,8 +87,7 @@ class AddUserActivity : AppCompatActivity() {
             true
         }
         binding.imgUser.setOnClickListener{
-            viewModel.setRandomImg()
-            binding.imgUser.loadUrl(viewModel.img)
+            viewModel.actImg()
         }
     }
 
@@ -94,7 +102,7 @@ class AddUserActivity : AppCompatActivity() {
         else{
             val adress = binding.txtAdress.text.toString()
             val web = binding.txtWeb.text.toString()
-            val photoUrl = viewModel.img
+            val photoUrl = viewModel.img.value ?: ""
             val user = User(0, name, email, tlf, adress, web, photoUrl)
             viewModel.insert(user)
             finish()
