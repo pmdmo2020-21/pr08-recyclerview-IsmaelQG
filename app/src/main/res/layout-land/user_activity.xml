@@ -163,6 +163,7 @@
         android:layout_marginBottom="@dimen/margin_2x"
         android:hint="@string/user_txtWeb"
         android:imeOptions="actionDone"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="@id/txtAdress"
