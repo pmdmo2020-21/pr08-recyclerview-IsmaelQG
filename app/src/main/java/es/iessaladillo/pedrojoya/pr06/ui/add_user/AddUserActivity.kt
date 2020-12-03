@@ -47,7 +47,9 @@ class AddUserActivity : AppCompatActivity() {
 
     // FIN NO TOCAR
 
-    private lateinit var binding : UserActivityBinding
+    private val binding : UserActivityBinding by lazy{
+        UserActivityBinding.inflate(layoutInflater)
+    }
     private val viewModel : AddUserViewModel by viewModels(){
         AddUserViewModelFactory(Database, application)
     }
@@ -60,7 +62,6 @@ class AddUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = UserActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()
     }
@@ -103,12 +104,14 @@ class AddUserActivity : AppCompatActivity() {
         val tlf = binding.txtPhonenumber.text.toString()
 
         if(viewModel.check(name, email, tlf)){
-            val adress = binding.txtAdress.text.toString()
-            val web = binding.txtWeb.text.toString()
-            val photoUrl = viewModel.img.value ?: ""
-            val user = User(0, name, email, tlf, adress, web, photoUrl)
-            viewModel.insert(user)
-            finish()
+            if(viewModel.tlfFormat(tlf)){
+                val adress = binding.txtAdress.text.toString()
+                val web = binding.txtWeb.text.toString()
+                val photoUrl = viewModel.img.value ?: ""
+                val user = User(0, name, email, tlf, adress, web, photoUrl)
+                viewModel.insert(user)
+                finish()
+            }
         }
 
     }

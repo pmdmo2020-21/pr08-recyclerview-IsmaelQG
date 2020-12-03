@@ -1,6 +1,7 @@
 package es.iessaladillo.pedrojoya.pr06.ui.add_user
 
 import android.app.Application
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,14 +35,22 @@ class AddUserViewModel(private val dataSource : DataSource, private val applicat
         dataSource.insertUser(user)
     }
 
+    fun tlfFormat(tlf : String) : Boolean{
+        if(!tlf.isDigitsOnly()){
+            _errorMsg.value = Event("Only digits in phone number")
+            return false
+        }
+        return true
+    }
+
     fun check(vararg fields : String) : Boolean{
         for(f in fields){
             if(f.isBlank()){
                 _errorMsg.value = Event(application.getString(R.string.user_invalid_data))
-                return false;
+                return false
             }
         }
-        return true;
+        return true
     }
 
     private fun getRandomPhotoUrl(): String =

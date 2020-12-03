@@ -56,14 +56,15 @@ class EditUserActivity : AppCompatActivity() {
                 Intent(context, EditUserActivity::class.java).putExtras(bundleOf(EXTRA_USER to user))
     }
 
-    private lateinit var binding : UserActivityBinding
+    private val binding : UserActivityBinding by lazy{
+        UserActivityBinding.inflate(layoutInflater)
+    }
     private val viewModel : EditUserViewModel by viewModels(){
         EditUserViewModelFactory(Database, intent.getParcelableExtra(EXTRA_USER)!!, application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = UserActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()
     }
@@ -129,12 +130,14 @@ class EditUserActivity : AppCompatActivity() {
         val tlf = binding.txtPhonenumber.text.toString()
 
         if(viewModel.check(name, email, tlf)){
-            val adress = binding.txtAdress.text.toString()
-            val web = binding.txtWeb.text.toString()
-            val photoUrl = viewModel.user.value?.photoUrl ?: ""
-            val user = User(viewModel.user.value?.id ?: 0, name, email, tlf, adress, web, photoUrl)
-            viewModel.edit(user)
-            finish()
+            if(viewModel.tlfFormat(tlf)){
+                val adress = binding.txtAdress.text.toString()
+                val web = binding.txtWeb.text.toString()
+                val photoUrl = viewModel.user.value?.photoUrl ?: ""
+                val user = User(viewModel.user.value?.id ?: 0, name, email, tlf, adress, web, photoUrl)
+                viewModel.edit(user)
+                finish()
+            }
         }
     }
 

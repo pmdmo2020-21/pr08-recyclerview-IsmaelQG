@@ -1,6 +1,7 @@
 package es.iessaladillo.pedrojoya.pr06.ui.edit_user
 
 import android.app.Application
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,6 +38,14 @@ class EditUserViewModel(private val dataSource : DataSource, userAssigned : User
 
     fun edit(user : User){
         dataSource.updateUser(user)
+    }
+
+    fun tlfFormat(tlf : String) : Boolean{
+        if(!tlf.isDigitsOnly()){
+            _errorMsg.value = Event("Only digits in phone number")
+            return false
+        }
+        return true
     }
 
     fun check(vararg fields : String) : Boolean{
