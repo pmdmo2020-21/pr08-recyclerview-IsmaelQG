@@ -17,6 +17,7 @@ import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 import es.iessaladillo.pedrojoya.pr06.databinding.UserActivityBinding
 import es.iessaladillo.pedrojoya.pr06.utils.loadUrl
+import es.iessaladillo.pedrojoya.pr06.utils.observeEvent
 import java.lang.Double.parseDouble
 
 class AddUserActivity : AppCompatActivity() {
@@ -48,12 +49,10 @@ class AddUserActivity : AppCompatActivity() {
 
     private lateinit var binding : UserActivityBinding
     private val viewModel : AddUserViewModel by viewModels(){
-        AddUserViewModelFactory(Database)
+        AddUserViewModelFactory(Database, application)
     }
 
     companion object {
-
-        const val EXTRA_USER = "EXTRA_USER"
 
         fun newIntent(context: Context) =
                 Intent(context, AddUserActivity::class.java)
@@ -69,11 +68,18 @@ class AddUserActivity : AppCompatActivity() {
     private fun setupViews(){
         listeners()
         observeRandomImg()
+        observeError()
     }
 
     private fun observeRandomImg(){
         viewModel.img.observe(this){
             changeImg(it)
+        }
+    }
+
+    private fun observeError(){
+        viewModel.errorMsg.observeEvent(this){
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -96,10 +102,7 @@ class AddUserActivity : AppCompatActivity() {
         val email = binding.txtEmail.text.toString()
         val tlf = binding.txtPhonenumber.text.toString()
 
-        if(name.isBlank() || email.isBlank() || tlf.isBlank()){
-            Snackbar.make(binding.root, getString(R.string.user_invalid_data), Snackbar.LENGTH_LONG).show()
-        }
-        else{
+        if(viewModel.check(name, email, tlf)){
             val adress = binding.txtAdress.text.toString()
             val web = binding.txtWeb.text.toString()
             val photoUrl = viewModel.img.value ?: ""
