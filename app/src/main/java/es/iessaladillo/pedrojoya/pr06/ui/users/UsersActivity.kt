@@ -103,6 +103,7 @@ class UsersActivity : AppCompatActivity(){
             setHasFixedSize(true)
             adapter = listAdapter
             layoutManager = GridLayoutManager(this@UsersActivity, resources.getInteger(R.integer.users_grid_columns))
+            addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
             itemAnimator = DefaultItemAnimator()
         }
     }

@@ -15,6 +15,7 @@ import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
 import es.iessaladillo.pedrojoya.pr06.databinding.UserActivityBinding
 import es.iessaladillo.pedrojoya.pr06.ui.add_user.AddUserActivity
+import es.iessaladillo.pedrojoya.pr06.utils.SoftInputUtils.hideSoftKeyboard
 import es.iessaladillo.pedrojoya.pr06.utils.loadUrl
 import es.iessaladillo.pedrojoya.pr06.utils.observeEvent
 import java.lang.Double.parseDouble
@@ -124,7 +125,8 @@ class EditUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSave() {
+    private fun onSave(){
+        hideSoftKeyboard(binding.root)
         val name = binding.txtName.text.toString()
         val email = binding.txtEmail.text.toString()
         val tlf = binding.txtPhonenumber.text.toString()
