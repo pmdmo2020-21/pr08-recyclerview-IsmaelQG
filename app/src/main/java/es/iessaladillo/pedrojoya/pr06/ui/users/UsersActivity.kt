@@ -8,14 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.GridLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import es.iessaladillo.pedrojoya.pr06.R
 import es.iessaladillo.pedrojoya.pr06.data.Database
 import es.iessaladillo.pedrojoya.pr06.data.model.User
@@ -104,7 +102,7 @@ class UsersActivity : AppCompatActivity(){
         binding.lstUsers.run {
             setHasFixedSize(true)
             adapter = listAdapter
-            layoutManager = LinearLayoutManager(this@UsersActivity)
+            layoutManager = GridLayoutManager(this@UsersActivity, resources.getInteger(R.integer.users_grid_columns))
             itemAnimator = DefaultItemAnimator()
         }
     }
